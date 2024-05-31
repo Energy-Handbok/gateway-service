@@ -1,0 +1,59 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user/**, /auth/**, /api/v1/user-system/**
+          filters:
+          - AuthFilter
+
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/api/v1/wallet/**, /api/v1/wallet-transaction/**
+          filters:
+            - AuthFilter
+
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/order/**, /api/payment/**
+          filters:
+            - AuthFilter
+
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/v1/notification/**
+          filters:
+            - AuthFilter
+
+        - id: interact-service
+          uri: lb://interact-service
+          predicates:
+            - Path=/api/v1/comment/**, /api/v1/interact/**
+          filters:
+            - AuthFilter
+
+        - id: food-service
+          uri: lb://food-service
+          predicates:
+            - Path=/api/v1/food/**, /api/v1/food-encyclopedia/**
+          filters:
+            - AuthFilter
+
+        - id: food-recipe-service
+          uri: lb://food-recipe-service
+          predicates:
+            - Path=/api/v1/cooking-recipe/**, /api/v1/food-tutorials/**, /api/v1/recipe-ingredients/**
+          filters:
+            - AuthFilter
+
+        - id: news-service
+          uri: lb://news-service
+          predicates:
+            - Path=/api/v1/news/**
+          filters:
+            - AuthFilter
