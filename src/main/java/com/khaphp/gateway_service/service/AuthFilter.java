@@ -78,23 +78,26 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
                 //take token and check it (valid, expired, role)
                 String token = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-                String[] arr = token.split(" ");
-                    //valid
-                if(arr.length != 2 || !arr[0].equals("Bearer")){
-                    throw new TokenException("Token is not valid");
-                }
-                    //expired
-                if(jwtHelper.isTokenExpired(arr[1])){
-                    throw new TokenException("Token is expired");
-                }
-                    //role
-                if(!urlPermission.get(method + "-" + urlPathNoHostAndParams).contains(jwtHelper.getRoles(arr[1]))){
-                    throw new ForbiddenException("Forbidden, you are not allow to access this resource");
-                }
-
-                log.info("true, accept request to resource " + urlPathNoHostAndParams + " ("+method+") with role " + jwtHelper.getRoles(arr[1]));
+                checkToken(token, urlPermission, urlPathNoHostAndParams, method);
             }
             return chain.filter(exchange);
         });
+    }
+
+    private void checkToken(String token, Map<String, List<String>> urlPermission, String urlPathNoHostAndParams, String method) {
+        String[] arr = token.split(" ");
+        //valid
+        if(arr.length != 2 || !arr[0].equals("Bearer")){
+            throw new TokenException("Token is not valid");
+        }
+        //expired
+        if(jwtHelper.isTokenExpired(arr[1])){
+            throw new TokenException("Token is expired");
+        }
+        //role
+        if(!urlPermission.get(method + "-" + urlPathNoHostAndParams).contains(jwtHelper.getRoles(arr[1]))){
+            throw new ForbiddenException("Forbidden, you are not allow to access this resource");
+        }
+        log.info("true, accept request to resource " + urlPathNoHostAndParams + " ("+method+") with role " + jwtHelper.getRoles(arr[1]));
     }
 }
