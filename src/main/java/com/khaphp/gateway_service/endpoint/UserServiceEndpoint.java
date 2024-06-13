@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class UserServiceEndpoint {
     public static final String PATH_SERVICE_AUTH = "/auth";
+    public static final String PATH_SERVICE_MAIL = "/mail";
+    public static final String PATH_SERVICE_REDIS = "/redis";
     public static final String PATH_SERVICE_USER = "/api/v1/user-system";
     private Map<String, List<String>> urlAutho; //Map<method-url, roles>
 
@@ -19,6 +21,14 @@ public class UserServiceEndpoint {
 
             //--PATH_SERVICE_AUTH
             urlAutho.put(HttpMethod.POST + "-" + PATH_SERVICE_AUTH + "/login",
+                    List.of(Publich.PUBLICH.name()));
+
+            //--PATH_SERVICE_MAIL
+            urlAutho.put(HttpMethod.GET + "-" + PATH_SERVICE_MAIL + "/send-otp",
+                    List.of(Publich.PUBLICH.name()));
+
+            //--PATH_SERVICE_REDIS
+            urlAutho.put(HttpMethod.GET + "-" + PATH_SERVICE_REDIS + "/check",
                     List.of(Publich.PUBLICH.name()));
 
             //--PATH_SERVICE_USER
