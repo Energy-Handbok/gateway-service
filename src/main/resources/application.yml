@@ -40,7 +40,7 @@ spring:
         - id: food-service
           uri: lb://food-service
           predicates:
-            - Path=/api/v1/food/**, /api/v1/food-encyclopedia/**
+            - Path=/api/v1/food/**, /api/v1/food-encyclopedia/**, /energy/**
           filters:
             - AuthFilter
 
